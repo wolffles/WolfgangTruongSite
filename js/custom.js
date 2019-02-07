@@ -177,7 +177,7 @@
             $this.typed({
                 strings: $this.attr('data-elements').split(','),
                 typeSpeed: 100,
-                backDelay: 3000
+                backDelay: 2000
             });
         });
     },  
