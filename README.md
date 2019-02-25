@@ -1,5 +1,5 @@
 # Wolfgang's Portfolio
-[www.wolfgangtruong.site](http://www.wolfgangtruong.site)
+[wolfgangtruong.site](http://wolfgangtruong.site)
 
 ## Notes:
 Fine tune projects to make portfolio look better. 
