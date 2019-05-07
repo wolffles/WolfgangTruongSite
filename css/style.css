@@ -20,7 +20,7 @@
     9.CTA SECTION
     10.WORK
     11.CLIENT
-    12.GREATE PEOPLE
+    12.GREAT PEOPLE
     13.SUBCRIBE SECTION
     14.BLOG
     15.CONTACT US
@@ -363,8 +363,16 @@ button:focus {
 /*==========================
         3.NAVBAR
 ============================*/
+.navbar>.container{
+    text-align: right;
+}
+
 .nav-name {
     color: white;
+}
+
+.nav-name.active {
+    opacity: 0;
 }
 
 .custom-nav {
@@ -1062,7 +1070,7 @@ button:focus {
     .custom-nav {
         margin-top: 0px;
         padding: 10px 0px !important;
-        background-color: #fff !important;
+        background-color: rgba(255, 255, 255, 0) !important;
     }
     .custom-nav .navbar-nav li a:before {
         content: '';
@@ -1095,7 +1103,10 @@ button:focus {
         font-size: 29px;
         margin-top: 0px;
         margin-bottom: 0px;
-        color: #000;
+        color: rgb(252, 248, 248);
+    }
+    .navbar-toggler.active{
+        color: rgba(3, 0, 0, 0.24);
     }
     .header_title {
         font-size: 40px;
@@ -1138,3 +1149,4 @@ button:focus {
         margin: 8px 10px;
     }
 }
+
