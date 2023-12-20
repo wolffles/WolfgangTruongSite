@@ -1,0 +1,72 @@
+.header {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 80%;
+}
+
+.container {
+    height: 100%;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+.calc {
+    border-radius: 10px;
+    box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.15), 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+    margin-inline-start: auto;
+    margin-inline-end: auto;
+    margin-block-start: 2em;
+    max-inline-size: 22rem;
+    overflow: hidden;
+    color: hsl(202, 11%, 29%);
+}
+
+.calc__display {
+    font-size: 2rem;
+    text-align: end; /* This is the Logical Property for text-align: right; and has very good browser support. */
+    background: hsl(202, 11%, 29%); /* background color */
+    color: hsl(255, 100%, 100%); /* text color */
+    padding-block-start: 0.25rem; /* Logical Property for padding-top */
+    padding-block-end: 0.25rem; /* Logical Property for padding-bottom */
+    padding-inline-end: 0.75rem; /* Logical Property for padding-right */
+}
+.calc__keys {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1px;
+    background: hsl(208, 24%, 74%);
+    padding: 0.5rem;
+}
+.calc__key {
+    background: hsl(210, 25%, 95%);
+    border: none;
+    padding-block-start: 0.5rem; /* Logical Property for padding-top */
+    padding-block-end: 0.5rem; /* Logical Property for padding-bottom */
+    padding-inline-start: 1.25rem; /* Logical Property for padding-left */
+    padding-inline-end: 1.25rem; /* Logical Property for padding-right */
+    font-size: 1.5rem;
+    /* Playful Styles */
+    inline-size: 70px;
+    block-size: 70px;
+    margin: 0.25rem;
+    border-radius: 40px;
+}
+.calc__key:active,
+.calc__key:focus {
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3) inset;
+  outline: none;
+}
+.calc__key--operator {
+    background: hsl(208, 25%, 86%);
+}
+.calc__key--operator:active {
+    background: hsl(208, 24%, 80%);
+  }
+.calc__key--enter {
+    grid-column: 4 / 5; /* Start at column #4 and end at column #5 (the very right edge). */
+    grid-row: 2 / span 4; /* Start at row #2 and span 4 rows */
+    background: hsl(357, 100%, 72%);
+    height: auto;
+}

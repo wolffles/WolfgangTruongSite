@@ -1,0 +1,179 @@
+
+<head>
+    <link rel="stylesheet" href="stuffs/calculator.css" />
+</head>
+<div class="header">
+    <h1>Magical Calculator</h1>
+    <p>This calculator converts your numbers into magic words. if you're looking for a real calculator try that phone thing you carry around with you.</p>
+    <br/>
+</header>
+<div class="container">
+    <div class="calc">
+        <div class="calc__display">0</div>
+        <div class="calc__keys">
+          <button class="calc__key calc__key--operator" data-action="add">+</button>
+          <button class="calc__key calc__key--operator" data-action="subtract">-</button>
+          <button class="calc__key calc__key--operator" data-action="multiply">&times;</button>
+          <button class="calc__key calc__key--operator" data-action="divide">÷</button>
+          <button class="calc__key 7">7</button>
+          <button class="calc__key 8">8</button>
+          <button class="calc__key 9">9</button>
+          <button class="calc__key 4">4</button>
+          <button class="calc__key 5">5</button>
+          <button class="calc__key 6">6</button>
+          <button class="calc__key 1">1</button>
+          <button class="calc__key 2">2</button>
+          <button class="calc__key 3">3</button>
+          <button class="calc__key 0">0</button>
+          <button class="calc__key" data-action="decimal">.</button>
+          <button class="calc__key" data-action="clear">AC</button>
+          <button class="calc__key calc__key--enter" data-action="calculate">=</button>
+        </div>
+      </div>
+</div>
+
+<script src="wordBank.js"></script>
+<script>
+    const calculator = document.querySelector('.calc')
+    const keys = calculator.querySelector('.calc__keys')
+    let n1 = ""
+    let n2 = ""
+    let operator = ""
+    let memo = ""
+    let opMemo = ""
+    let lastPressed = ""
+
+    let calculate = (n1,operator,n2) => {
+        switch(operator) {
+            case '+':
+                // unary plus operator to convert them to numbers 
+                // other operators function with string but addition treats them as concat strings
+                return +n1 + +n2;
+            case '-':
+                return n1 - n2;
+            case '×': 
+                return n1 * n2;
+            case '÷':
+                return n1 / n2;
+            default:
+                "not an operation"
+        }
+    }
+
+    const calcLogic = (e, type) => {
+        const display = calculator.querySelector('.calc__display')
+        const key = e.target
+        const action = key.dataset.action
+        const keyContent = key.textContent
+        lastPressed = key.textContent
+        let displayedNum = display.textContent
+        const number = key.textContext
+        const additive = ['add','subtract', '+', '-']
+        const multiplicative = ['multply', 'divide', '÷', '×']
+        const operators = ['+', '-', '÷', '×']
+
+        if (!action) {
+            if (displayedNum === '0' || !n1) {
+                display.textContent =  keyContent
+                n1 = keyContent
+            } else if(isNaN(displayedNum) && operator){
+                display.textContent =  keyContent
+                n2 = keyContent
+            } else if (isNaN(displayedNum) && !operator){
+                display.textContent = keyContent
+                n1 = keyContent
+            } else if(operator && !n2){
+                display.textContent =  keyContent
+                n2 = keyContent
+            } else if(operator && n2){
+                display.textContent = displayedNum + keyContent
+                n2 = display.textContent
+            }else {
+                display.textContent = displayedNum + keyContent
+                n1 = display.textContent
+            }
+        }
+
+        if (
+            action === 'add' ||
+            action === 'subtract' ||
+            action === 'multiply' ||
+            action === 'divide'
+        ) {
+            console.log(!operators.includes(lastPressed))
+            if (operator){
+                if (n1 && n2){
+                    if ( additive.includes(operator) == additive.includes(action) ){
+                        n1 = calculate(n1, operator, n2)
+                        // console.log(giveMeWord(n1))
+                        display.textContent = giveMeWord(n1)
+                        if (memo && opMemo && additive.includes(operator)){
+                            n1 = calculate(n1, opMemo, memo)
+                        }
+                        // display.textContent = (n1)
+                        display.textContent = giveMeWord(n1)
+                        n2 = ""
+                    } else if ( additive.includes(operator) !== additive.includes(action) ){
+                        if (additive.includes(action)){
+                            n1 = calculate(n1,operator,n2)
+                            if (memo && opMemo){
+                                n1 = calculate(n1, opMemo, memo)
+                            }
+                            // display.textContent = (n1)
+                            display.textContent = giveMeWord(n1)
+                            operator = keyContent
+                            n2 = ""
+                        } else {
+                            memo = n1 
+                            opMemo = operator
+                            n1 = n2
+                            n2 = ""
+                            operator = keyContent
+                        }
+                    } 
+                } 
+            }
+            operator = keyContent
+        }
+
+        if (action === 'calculate') {
+            console.log(n1, operator,n2)
+            console.log(calculate(n1, operator, n2))
+
+            n1 = calculate(n1, operator, n2)
+            display.textContent = giveMeWord(n1)
+            // display.textContent = (n1)            
+        }
+
+        if (action === 'decimal') {
+            if (!displayedNum.includes('.')){
+                display.textContent = displayedNum + '.'
+            }
+        }
+
+        if (action === 'clear') {
+            display.textContent = '0'
+            n1 = ""
+            n2 = ""
+            operator = ''
+        }
+    }
+
+    // **** MORE WORK FOR LITTLE PAYOFF *****
+    // keys.addEventListener("keypress", (e) => {
+    //     const allowedButtons = ['1','2','3','4','5','6','7','8','9','0']
+    //     if (allowedButtons.includes(e.key)) {
+    //         console.log(e)
+    //         calcLogic(e, 'press')
+    //     }
+
+    // });
+
+    keys.addEventListener('click', e => {
+        // console.log(e)
+        if (e.target.matches('button')) {
+            calcLogic(e)
+        }
+    })
+</script>
+</script> 
