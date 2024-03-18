@@ -1,0 +1,158 @@
+
+<head>
+    <link rel="stylesheet" href="../funAssets/simon.css" />
+</head>
+<div class="page">
+    <div class="header">
+        <h1>SUPER SECRET ACCOUNT</h1>
+        <p>Sign up using the BEST security system on the web</p>
+        <br/>
+    </div>
+    <div class="body">
+        <div class="userinfo">
+            <p>* no information is stored *</p>
+            <input id="username" placeholder="Enter Username" class="username" type="text" maxLength="12" onchange="username()"/>
+            <br />
+            <button class="readyButton" onclick="readyButton()"> You'll be given a one time password to log in the first time</button>
+            <button class="setButton" style="display:none" onclick="setButton()"> are you ready for your password?</button>
+            <button class="startButton" style="display:none" data-action="start"> don't blink</button>
+        </div>
+        <div class="simonContainer" style="display:none">
+            <div class="centerLogo"></div>
+            <div class="topLeftPanel box">
+                <button id="panel1" style="background-color:red" class="topLeftPanel" data-action="1"></button>
+            </div>
+            <div class="topRightPanel box">
+              <button id="panel2" style="background-color:blue" class="topRightPanel" data-action="2"></button>
+            </div>
+            <div class="bottomLeftPanel box">
+                <button id="panel3" style="background-color:green" class="bottomLeftPanel" data-action="3"></button>
+            </div>
+            <div class="bottomRightPanel box">
+                <button id="panel4" style="background-color:yellow" class="bottomRightPanel" data-action="4"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const body = document.querySelector('.body')
+    const userInfo = document.querySelector('.userinfo')
+    const startButton = body.querySelector('.startButton')
+
+    const username = () => {
+        console.log('hello')
+        let x = userInfo.querySelector('.username').value
+        console.log(x)
+    }
+
+    const readyButton = () => {
+        body.querySelector('.readyButton').style.display = 'none'
+        body.querySelector('.setButton').style.display = 'inline'
+    }
+    const setButton = () => {
+        body.querySelector('.setButton').style.display = 'none'
+        body.querySelector('.startButton').style.display = 'inline'
+    }
+
+    // SIMON SAYS START
+    const getRandom = (max) => {
+       return Math.floor(Math.random() * max) + 1
+    }
+
+    const activatePanel = (panel, originalColor) => {
+        panel.style.backgroundColor = "white";
+        setTimeout(() => {
+            panel.style.backgroundColor = originalColor;
+        }, 500)
+    }
+
+    const showFail = () => { alert("you failed");}
+
+    function rickroll() {
+        alert("you are entering a secure area")
+        window.location = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+    }
+
+    function processPanels(index, shuffledArray) {
+        if (index >= shuffledArray.length) {
+            return; // Exit condition when all panels have been processed
+        }
+        let panel = body.querySelector('#panel' + shuffledArray[index]);
+        let originalColor = panel.style.backgroundColor
+        activatePanel(panel, originalColor);
+        setTimeout(() => {
+            processPanels(index + 1, shuffledArray); // Move to the next element after 1 seconds
+        }, 1000);
+    }
+
+
+    const gameCheck = (simonAry, userAry) => {
+        // JS is weird that it can't compare arrays using == or === because they are from a Object property
+        if (simonAry.toString() === userAry.toString()) {
+            console.log( 'matches' )
+            rickroll()
+        } else {
+            showFail()
+            console.log('you failed')
+            body.querySelector('.startButton').style.display = 'inline'
+            body.querySelector('.simonContainer').style.display = 'none'
+        }
+    }
+
+    const simonSays = () => {
+    const array = [getRandom(4), getRandom(4), getRandom(4), getRandom(4)];
+    const shuffledArray = array.slice();
+    // Fisher-Yates shuffle algorithm
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+    }
+    console.log(shuffledArray);
+    processPanels(0, shuffledArray);
+
+    const userInput = [];
+    let j = 0;
+    const clickHandler = (e) => {
+        if (e.target.matches('button')) {
+            let buttonValue = parseInt(e.target.attributes['data-action'].value);
+            let panel = body.querySelector('#panel' + buttonValue);
+            let originalColor = panel.style.backgroundColor
+            console.log(buttonValue);
+            activatePanel(panel, originalColor )
+            userInput.push(buttonValue);
+            console.log(userInput);
+            j++;
+
+            if (j === 4) {
+                console.log("4 clicks recorded. Removing event listener.");
+                // Remove the event listener
+                console.log(shuffledArray)
+                gameCheck(shuffledArray, userInput)
+                body.removeEventListener('click', clickHandler);
+                //compare answers
+                //succeed or fail
+                // alert if fails
+                // enter if passes
+
+            }
+        }
+    };
+
+    setTimeout(() => {
+        console.log('start');
+        body.addEventListener('click', clickHandler);
+    }, 4000);
+};
+
+    startButton.addEventListener('click', e => {
+        // console.log(e)
+        if (e.target.matches('button')) {
+            body.querySelector('.startButton').style.display = 'none'
+            body.querySelector('.simonContainer').style.display = 'flex'
+            setTimeout(() => {
+                simonSays()
+            }, 300)
+        }
+    })
+</script>
